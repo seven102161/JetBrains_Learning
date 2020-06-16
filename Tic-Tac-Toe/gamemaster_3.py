@@ -5,23 +5,12 @@ class TicTacToe:
         self.cells = None
         self.ele_list = []
         self.new_ele_list = []
-        # self.board = [[' ' for _i in range(3)] for _k in range(3)]
-        # self.move = 0
         self.coordinates = None
         self.row = None
         self.col = None
-        self.occupied_cells = set()
+        self.occupied_cells = [[], [], []]
 
     def display(self):
-
-        for i in self.cells:
-            if i in self.elements_allow:
-                self.ele_list.append(i)
-            else:
-                self.ele_list.append(' ')
-
-        self.new_ele_list = [self.ele_list[:3], self.ele_list[3:6], self.ele_list[6:]]
-        print(self.new_ele_list)
 
         print('''---------
 | {} {} {} |
@@ -31,19 +20,51 @@ class TicTacToe:
                     self.new_ele_list[1][0], self.new_ele_list[1][1], self.new_ele_list[1][2],
                     self.new_ele_list[2][0], self.new_ele_list[2][1], self.new_ele_list[2][2]))
 
-    def players_move(self):
+    def enter_cells(self):
         self.cells = input('Enter cells: ')
+        for i in self.cells:
+            if i in self.elements_allow:
+                self.ele_list.append(i)
+            else:
+                self.ele_list.append(' ')
+
+        self.new_ele_list = [self.ele_list[:3], self.ele_list[3:6], self.ele_list[6:]]
         self.display()
+
+    def enter_coordinates(self):
+        temp_list_1 = [[], [], []]
+        temp_list_2 = [[], [], []]
+
+# Left turn the matrix(new_ele_list) 3 times
+
+        for row in self.new_ele_list:
+            temp_list_1[2].append(row[0])
+            temp_list_1[1].append(row[1])
+            temp_list_1[0].append(row[2])
+
+        for row in temp_list_1:
+            temp_list_2[2].append(row[0])
+            temp_list_2[1].append(row[1])
+            temp_list_2[0].append(row[2])
+
+        for row in temp_list_2:
+            self.occupied_cells[2].append(row[0])
+            self.occupied_cells[1].append(row[1])
+            self.occupied_cells[0].append(row[2])
 
         while True:
             self.coordinates = input('Enter the coordinates: ')
 
-            self.row, self.col = self.coordinates.split()
+            try:
+                self.row, self.col = self.coordinates.split()
+            except ValueError:
+                print('You should enter numbers!')
+                continue
 
             try:
                 self.row = int(self.row)
                 self.col = int(self.col)
-            except:
+            except ValueError:
                 print('You should enter numbers!')
                 continue
 
@@ -51,25 +72,24 @@ class TicTacToe:
                 print('Coordinates should be from 1 to 3!')
                 continue
 
-            if (self.row, self.col) in self.occupied_cells:
+            if self.occupied_cells[self.row - 1][self.col - 1] != ' ':
                 print('This cell is occupied! Choose another one!')
                 continue
 
-            self.occupied_cells.add((self.row, self.col))
-            # self.new_ele_list[self.row - 1][self.col - 1] = 'X'
-            break
+            else:
+                self.occupied_cells[self.row - 1][self.col - 1] = 'X'
+                break
+
+# Left turn the matrix(occupied_cells) 1 time, then put into the matrix(new_ele_list)
+        self.new_ele_list = [[], [], []]
+        for row in self.occupied_cells:
+            self.new_ele_list[2].append(row[0])
+            self.new_ele_list[1].append(row[1])
+            self.new_ele_list[0].append(row[2])
 
         self.display()
 
 
 game = TicTacToe()
-game.players_move()
-
-
-
-
-
-
-
-
-
+game.enter_cells()
+game.enter_coordinates()
