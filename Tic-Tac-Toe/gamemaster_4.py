@@ -13,12 +13,11 @@ class TicTacToe:
 
     def display(self):
 
-        print('''     1 2 3
-   ---------
- 1 | {} {} {} |
- 2 | {} {} {} |
- 3 | {} {} {} |
-   ---------'''.format(self.new_ele_list[0][0], self.new_ele_list[0][1], self.new_ele_list[0][2],
+        print('''---------
+| {} {} {} |
+| {} {} {} |
+| {} {} {} |
+---------'''.format(self.new_ele_list[0][0], self.new_ele_list[0][1], self.new_ele_list[0][2],
                     self.new_ele_list[1][0], self.new_ele_list[1][1], self.new_ele_list[1][2],
                     self.new_ele_list[2][0], self.new_ele_list[2][1], self.new_ele_list[2][2]))
 
@@ -38,12 +37,11 @@ class TicTacToe:
             return 'O wins'
 
     def enter_coordinates(self):
-        print('''    1 2 3
-  ---------
-1 |       |
-2 |       |
-3 |       |
-  ---------''')
+        print('''---------
+|       |
+|       |
+|       |
+---------''')
 
         while self.moves > 0:
             self.coordinates = input('Enter the coordinates: ')
@@ -80,12 +78,12 @@ class TicTacToe:
 
 
 # Left turn the matrix(occupied_cells) 1 time, then put into the matrix(new_ele_list)
-            self.new_ele_list = self.occupied_cells
-            # self.new_ele_list = [[], [], []]
-            # for row in self.occupied_cells:
-            #     self.new_ele_list[2].append(row[0])
-            #     self.new_ele_list[1].append(row[1])
-            #     self.new_ele_list[0].append(row[2])
+#             self.new_ele_list = self.occupied_cells
+            self.new_ele_list = [[], [], []]
+            for row in self.occupied_cells:
+                self.new_ele_list[2].append(row[0])
+                self.new_ele_list[1].append(row[1])
+                self.new_ele_list[0].append(row[2])
 
             self.display()
 
