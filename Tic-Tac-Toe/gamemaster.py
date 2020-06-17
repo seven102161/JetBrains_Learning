@@ -13,7 +13,6 @@ def tic_tac_toe(cells):
                     print('Not legal element')
                     continue
 
-
             first_line = ' '.join(elements[:3])
             second_line = ' '.join(elements[3:6])
             third_line = ' '.join(elements[6:])
