@@ -1,45 +1,57 @@
 def rewrite_content(string):
     string = string.replace('--', '+')
     string = string.replace('---', '-')
-    string = string.replace('+', '')
+    string = string.replace('+', ' ')
     return string
 
 
 def calculation(string):
-    content_list = list(string)
+    string = string.split()
+    operator = 'add'
+    result = 0
 
-    minus_sign_list = []
-    count = 0
-    for i in content_list:
+    for i in string:
         if i == '-':
-            minus_sign_list.append(count)
+            operator = 'minus'
         else:
-            content_list[i] = int(i)
-        count += 1
+            if operator == 'add':
+                result += int(i)
+            elif operator == 'minus':
+                result -= int(i)
+                operator = 'add'
 
-    for i in minus_sign_list:
-        content_list[i + 1] *= -1
-
-    final_list = [i for i in content_list if i != '-']
-
-    return sum(final_list)
+    return result
 
 
-while True:
-    expressions = input()
-    if expressions == '/help':
-        print('The program calculates the sum of numbers')
-        continue
+def main():
 
-    if expressions == '/exit':
-        print('Bye!')
-        break
+    while True:
+        expressions = input()
+        if expressions == '/help':
+            print('The program calculates the sum of numbers')
+            continue
 
-    if len(expressions) == 0:
-        print(r'If you need help, you can write "/help"')
-        continue
+        if expressions == '/exit':
+            print('Bye!')
+            break
 
-    n = rewrite_content(expressions)
-    print(calculation(n))
+        if len(expressions) == 0:
+            print(r'If you need help, you can write "/help"')
+            continue
+
+        new_expressions = rewrite_content(expressions)
+
+        print(calculation(new_expressions))
+
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+
+
+
 
 

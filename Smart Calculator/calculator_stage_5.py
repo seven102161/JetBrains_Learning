@@ -1,63 +1,69 @@
-def expression_check(expression):
-    valid_words_list = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '-', ' ']
-    for word in expression:
-        if word not in valid_words_list:
-            return False
-
-    if expression.find('+') == -1 or expression.find('-') == -1:
-        return False
-
-    if expression.endswith('+') or expression.endswith('-'):
-        return False
-
-
-def command_check(expression):
-    if expression == '/exit':
-        return True
-    elif expression != '/exit':
-        return False
-
-
 def rewrite_content(expression):
     expression = expression.replace('--', '+')
     expression = expression.replace('---', '-')
+    expression = expression.replace('+', ' + ')
+    expression = expression.replace('-', ' - ')
     return expression
 
 
 def calculation(expression):
-    content_list = list(expression)
+    expression = expression.split()
+    result = 0
+    operator = '+'
+    pre_element = 'operator'
 
-    minus_sign_list = []
-    # add_sign_list = []
-    count = 0
-    for i in content_list:
-        if i == '-':
-            minus_sign_list.append(count)
-        else:
-            content_list[i] = int(i)
-        count += 1
+    for element in expression:
+        if pre_element == 'digit':
+            if element.isdigit():
+                result = 'Invalid expression'
+            else:
+                operator = element
+                pre_element = 'operator'
 
-    for i in minus_sign_list:
-        content_list[i + 1] *= -1
+        elif pre_element == 'operator':
+            if element.isdigit():
+                if operator == '+':
+                    result += int(element)
+                else:
+                    result -= int(element)
+                pre_element = 'digit'
+            else:
+                operator = element
+                pre_element = 'operator'
 
-    final_list = [i for i in content_list if i != '-']
-
-    return sum(final_list)
+    return result
 
 
 def main():
     while True:
         expression = input()
 
-        if expression.startswith(r'/'):
-            if expression_check(expression):
+        if expression.startswith('/'):
+            if expression == '/exit':
                 print('Bye!')
                 break
+
+            elif expression == '/help':
+                print('The program calculates the sum of numbers')
+                continue
+
             else:
                 print('Unknown command')
                 continue
 
-        if expression_check(expression) is False:
+        if len(expression) == 0:
+            print(r'If you need help, you can write "/help"')
+            continue
+
+        if expression.endswith('+') or expression.endswith('-'):
+            print('Invalid expression')
+            continue
+
+        alpha = 0
+        for i in expression:
+            if i.isalpha():
+                alpha += 1
+        if alpha > 0:
             print('Invalid expression')
             continue
 
