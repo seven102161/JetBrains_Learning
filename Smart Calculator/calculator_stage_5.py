@@ -52,7 +52,6 @@ def main():
                 continue
 
         if len(expression) == 0:
-            print(r'If you need help, you can write "/help"')
             continue
 
         if expression.endswith('+') or expression.endswith('-'):
