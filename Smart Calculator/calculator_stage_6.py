@@ -41,15 +41,81 @@ def variables_store(expression):
     return result
 
 
-def expression_refactoring():
-    pass
+def expression_refactoring(expression):
+    # rewrite expression
+    expression = expression.replace('--', '+')
+    expression = expression.replace('---', '-')
+    expression = expression.replace('+', ' + ')
+    expression = expression.replace('-', ' - ')
+    expression = expression.split()
+
+    result = None
+    for i in range(len(expression)):
+        if expression[i] in ['+', '-']:
+            continue
+        if expression[i].isdigit():
+            continue
+        else:
+            if valid_variable(*expression[i]) == 'wrong':
+                print('Invalid identifier')
+                result = 'wrong'
+                break
+            if expression[i] not in vars_stored.keys():
+                result = 'wrong'
+                print('Unknown variable')
+                break
+            if expression[i] in vars_stored.keys():
+                expression[i] = str(vars_stored[expression[i]])
+
+    if result == 'wrong':
+        return None
+    else:
+        return expression
 
 
-def calculation():
-    pass
+def valid_variable(*args):
+    result = None
+    digit_count = 0
+    alpha_count = 0
+    for i in args:
+        if i.isdigit():
+            digit_count += 1
+        else:
+            alpha_count += 1
+    if digit_count > 0 and alpha_count > 0:
+        result = 'wrong'
+    return result
+
+
+def calculation(expression):
+    result = 0
+    operator = '+'
+    pre_element = 'operator'
+
+    for element in expression:
+        if pre_element == 'digit':
+            if element.isdigit():
+                result = 'Invalid expression'
+            else:
+                operator = element
+                pre_element = 'operator'
+
+        elif pre_element == 'operator':
+            if element.isdigit():
+                if operator == '+':
+                    result += int(element)
+                else:
+                    result -= int(element)
+                pre_element = 'digit'
+            else:
+                operator = element
+                pre_element = 'operator'
+
+    return result
 
 
 def main():
+
     while True:
         expression = input()
 
@@ -62,7 +128,10 @@ def main():
         elif command is None:
             pass
 
-        # Variable assignment check
+        if len(expression) == 0:
+            continue
+
+        # Variable assignment
         if expression.count('=') == 1:
             variables_store(expression)
             continue
@@ -70,9 +139,14 @@ def main():
             print('Invalid assignment')
             continue
 
+        # expression rewrite and calculate
+        expression = expression_refactoring(expression)
+        if expression is None:
+            continue
+        else:
+            print(calculation(expression))
+
 
 if __name__ == '__main__':
     vars_stored = dict()
     main()
-    print(vars_stored)
-
