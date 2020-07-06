@@ -47,6 +47,8 @@ def expression_refactoring(expression):
     expression = expression.replace('---', '-')
     expression = expression.replace('+', ' + ')
     expression = expression.replace('-', ' - ')
+    expression = expression.replace('(', ' ( ')
+    expression = expression.replace(')', ' ) ')
     expression = expression.split()
 
     result = None
