@@ -43,8 +43,10 @@ def variables_store(expression):
 
 def expression_refactoring(expression):
     # rewrite expression
-    expression = expression.replace('--', '+')
     expression = expression.replace('---', '-')
+    expression = expression.replace('--', '+')
+    expression = expression.replace('+++', '+')
+    expression = expression.replace('++', '+')
     expression = expression.replace('+', ' + ')
     expression = expression.replace('-', ' - ')
     expression = expression.replace('(', ' ( ')
