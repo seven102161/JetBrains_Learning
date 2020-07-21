@@ -135,7 +135,10 @@ def calculation(expression_queue):
             break
         element = expression_queue.popleft()
         if element.isdigit():
-            result_queue.append(int(element))
+            if element == '0':
+                result_queue.append(element)
+            else:
+                result_queue.append(int(element))
 
         elif element.isalpha():
             try:
@@ -151,7 +154,10 @@ def calculation(expression_queue):
                 x = result_queue.pop()
                 y = result_queue.pop()
                 r = y + x
-                result_queue.append(r)
+                if r == 0:
+                    result_queue.append('0')
+                else:
+                    result_queue.append(r)
             except Exception:
                 print('Invalid expression')
                 result = 'wrong'
@@ -162,7 +168,11 @@ def calculation(expression_queue):
                 x = result_queue.pop()
                 y = result_queue.pop()
                 r = y - x
-                result_queue.append(r)
+                if r == 0:
+                    result_queue.append('0')
+                else:
+                    result_queue.append(r)
+
             except Exception:
                 if len(expression_queue) == 0 and len(result_queue) == 0:
                     result_queue.append(x * -1)
@@ -187,7 +197,7 @@ def calculation(expression_queue):
                 x = result_queue.pop()
                 y = result_queue.pop()
                 r = y / x
-                result_queue.append(r)
+                result_queue.append(int(r))
             except Exception:
                 print('Invalid expression')
                 result = 'wrong'
@@ -196,6 +206,7 @@ def calculation(expression_queue):
     if result == 'wrong':
         pass
     else:
+        # print(result_queue)
         return result_queue.pop()
 
 
@@ -233,7 +244,9 @@ def main():
         else:
             post_expression = infix_to_postfix(expression)
             if post_expression:
-                print(calculation(post_expression))
+                result = calculation(post_expression)
+                if result:
+                    print(result)
 
 
 if __name__ == '__main__':
